@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{warm: (typeof this.weather.name !== 'undefined' && this.weather.main.temp > 16), cold: this.weather.name !== 'undefined' && this.weather.main.temp < 16}">
     <main>
       <div class="search-box">
         <input type="text" class="search-bar" placeholder="Search ..." v-model="query" @keypress="fetchWeather"/>
@@ -73,18 +73,25 @@ body{
    font-size: larger;
 }
 #app{
-  background-image:url(./assets/cold-bg.jpg) ;
-  background-size: cover;
-  background-position: bottom;
-  transition: 0.4s;
+  transition: 0.7s;
 }
 
-#app .warm{
-  background-image:url(./assets/warm-bg.jpg) ;
+.cold{
+  background-image:url(./assets/cold-bg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom;
+}
+
+.warm{
+  background-image:url(./assets/warm-bg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom;
 }
 main{
-  min-height: 100vh;
   padding: 25px;
+  min-height: 100vh;
   background-image: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.755));
 }
 
@@ -93,69 +100,67 @@ main{
   margin-bottom: 30px;
 }
   
-  .search-box .search-bar{
-    display: block;
-    width: 100%;
-    padding: 15px;
+.search-box .search-bar{
+  display: block;
+  width: 100%;
+  padding: 15px;
 
-    color:#340345;
-     font-size: 20px;
+  color:#340345;
+  font-size: 20px;
 
-     appearance: none;
-     border: none;
-     outline: none;
-     background: none;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
 
-     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
-     background-color: rgba(255, 255, 255, .5);
-     border-radius: 0px 16px 0px 16px ;
-     transition: 0.4s;
-  }
-  .search-box .search-bar{
-    box-shadow: 0px 0px 16px rgba (0, 0, 0, 0.25) ;
-    background-color: rgba(225, 225, 225, 0.75);
-    border-radius: 16px 0px 16px 0px;
-  }
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, .5);
+  border-radius: 0px 16px 0px 16px ;
+  transition: 0.4s;
+}
+.search-box .search-bar{
+  box-shadow: 0px 0px 16px rgba (0, 0, 0, 0.25) ;
+  background-color: rgba(225, 225, 225, 0.75);
+  border-radius: 16px 0px 16px 0px;
+}
 
-  .location-box .location{
-    color:#fff;
-    font-size: 32px;
-    font-weight: 500;
-    text-align: center;
-    text-shadow: #340345;
-  }
-  .location-box .date{
-        color:#fff;
-    font-size: 20px;
-    font-weight: 300;
-    font-style: italic ;
-    text-align: center;
-  }
-  .weather-box{
-    text-align: center;
-  }
-  .weather-box .temp{
-    display: inline-block;
-    padding: 10px 25px;
-    color: #fff;
-    font-size: 102px;
-    font-weight: 900;
+.location-box .location{
+  color:#fff;
+  font-size: 32px;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: #340345;
+}
+.location-box .date{
+  color:#fff;
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic ;
+  text-align: center;
+}
+.weather-box{
+  text-align: center;
+}
+.weather-box .temp{
+  display: inline-block;
+  padding: 10px 25px;
+  color: #fff;
+  font-size: 102px;
+  font-weight: 900;
 
-    text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
-    background-color: rgba(255, 255, 255, .25);
-    border-radius: 10px;
-    margin: 30px 0px;
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, .25);
+  border-radius: 10px;
+  margin: 30px 0px;
+  box-shadow:3px 6px  rgba(0, 0, 0, .5);
+}
 
-    box-shadow:3px 6px  rgba(0, 0, 0, .5);
-
-  }
-
-  .weather-box .weather{
-    color: #fff;
-    font-size: 48px;
-    font-weight: bold;
-    font-style: italic;
-    text-shadow: 3px 6px  rgba(0, 0, 0, .5);
-  }
+.weather-box .weather{
+  color: #fff;
+  font-size: 48px;
+  font-weight: bold;
+  font-style: italic;
+  text-shadow: 3px 6px  rgba(0, 0, 0, .5);
+}
 
 </style>
