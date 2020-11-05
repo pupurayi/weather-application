@@ -1,20 +1,12 @@
 <template>
-  <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp
-  > 16 ? 'warm': ''">
+  <div id="app">
     <main>
       <div class="search-box">
-        <input
-         type="text" 
-         class="search-bar" 
-         placeholder="Search ..."
-         v-model="query"
-         @keypress="fetchWeather"
-         />
-        
+        <input type="text" class="search-bar" placeholder="Search ..." v-model="query" @keypress="fetchWeather"/>
       </div>
-      <div class="weather-wrap" v-if="typeof weather.main != undefined">
+      <div class="weather-wrap" v-if="typeof this.weather.name !== 'undefined'">
         <div class="location-box">
-          <div class="location"> {{weather.name}},{{weather.sys.country}}</div>
+          <div class="location">{{weather.name}},{{weather.sys.country}}</div>
           <div class="date">{{dateBuilder() }}</div>
         </div>
 
@@ -36,20 +28,22 @@ export default {
       api_key:'375da8489bb3e336757ea42e5bc9131c',
       url_base:'https://api.openweathermap.org/data/2.5',
       query:'',
-      weather:{}
+      weather: {}
     }
   },
+  mounted: async function(){
+    // this is similar to "DOMContentLoaded" event or the jquery "ready" event and will run once the page has been loaded 
+    var response = await fetch(`${this.url_base}/weather?q=Harare&units=metric&appid=${this.api_key}`);
+    var data = await response.json();
+    this.weather = data;
+  },
   methods:{
-    fetchWeather(e){
+    async fetchWeather(e){
       if (e.key == "Enter"){
-        fetch('${this.url_base}weather?q=${this.query}&units=metric&ADDID=${this.api_key}')
-        .then(res =>{
-          return res.json();
-        }).then(this.setResults);
+        var response = await fetch(`${this.url_base}/weather?q=${this.query}&units=metric&appid=${this.api_key}`);
+        var data = await response.json();
+        this.weather = data;
       }
-    },
-    setResults(results){
-      this.weather = results;
     },
     dateBuilder (){
       let d = new Date ();
@@ -62,8 +56,7 @@ export default {
       let date = d.getDate();
       let month = months [d.getMonth()];
       let year = d.getFullYear();   
-      return '${day} ${date} ${months} ${year}';
-      
+      return `${day} ${date} ${month} ${year}`;
     }
   }
 } 
